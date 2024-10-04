@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solid Waste Management Portal</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #007bff;
+        }
+        button {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Solid Waste Management Portal</h1>
+    <h3>Your captured information by clicking the button below:</h3>
+    
+    <button id="view-button" class="btn btn-primary btn-lg">Click to View</button>
+
+    <div id="result" style="display: none;">
+        <h3>Captured Data:</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Image 1</th>
+                    <th>Image 2</th>
+                    <th>Image 3</th>
+                    <th>Image 4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="image-row"></tr>
+            </tbody>
+        </table>
+        <h4>Weight: <span id="weight"></span></h4>
+        <h4>RFID: <span id="rfid"></span></h4>
+    </div>
+
+    <script>
+        document.getElementById('view-button').onclick = function() {
+            fetch('http://127.0.0.1:5000/get_data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('weight').innerText = data.weight;
+                    document.getElementById('rfid').innerText = data.rfid;
+
+                    const imageRow = document.getElementById('image-row');
+                    imageRow.innerHTML = `
+                        <td><img src="${data.image1}" style="width:100px; height:auto;"></td>
+                        <td><img src="${data.image2}" style="width:100px; height:auto;"></td>
+                        <td><img src="${data.image3}" style="width:100px; height:auto;"></td>
+                        <td><img src="${data.image4}" style="width:100px; height:auto;"></td>
+                    `;
+
+                    document.getElementById('result').style.display = 'block';
+                });
+        }
+    </script>
+
+</body>
+</html>
